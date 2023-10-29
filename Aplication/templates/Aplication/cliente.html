@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block h1_titulo %}BIENVENIDO CLIENTE{% endblock h1_titulo %}
+{% block p_titulo %}Esta es nuestra seccion de clientes{% endblock p_titulo %}
+
+{% block tit %}<title>Cliente</title>{% endblock tit %}
+
+{% block formulario %}
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {{formulario}}    
+    </table>
+    <input type="submit" name="" id="" value="Crear">    
+</form>
+{% endblock formulario %}

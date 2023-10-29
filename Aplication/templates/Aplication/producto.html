@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block h1_titulo %}PRODUCTOS{% endblock h1_titulo %}
+{% block p_titulo %}Bienvenido a nuestro catalago de productos{% endblock p_titulo %}
+
+{% block tit %}<title>Nuestros Productos</title>{% endblock tit %}
+
+{% block formulario %}
+<form action="">
+     {{formulario}}    
+    <input type="submit" name="" id="" value="Buscar">    
+</form>
+<ul>
+    {% for prod in producto_buscado %}
+    <li>Producto:{{prod}}</li>
+    {% endfor %}
+</ul>
+{% endblock formulario %}
