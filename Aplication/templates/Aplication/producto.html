@@ -15,9 +15,12 @@
 
 {% block formulario_buscar %}
 <form action="">
-    {{ formulario_buscar.as_table }}  
+    <label for="{{ formulario.producto.id_for_label }}">Producto:</label>
+    {{ formulario.producto }}
+    <br>
     <input type="submit" name="" id="" value="Buscar">    
 </form>
+<p>Realice la búsqueda</p> 
 <ul>
     {% for prod in producto_buscado %}
         <li>Producto: {{ prod.producto }}</li>  
