@@ -66,6 +66,8 @@ def vista_producto(request):
             producto_buscado = Producto.objects.all()
     else:
         formulario_buscar = BusquedaproductoFormulario()
+        formulario_crear = ProductoFormulario()
         producto_buscado = Producto.objects.all()
 
-    return render(request, 'Aplication/producto.html', {"formulario": formulario_buscar, "producto_buscado": producto_buscado})
+    return render(request, 'Aplication/producto.html', {"formulario_crear": formulario_crear, "formulario": formulario_buscar, "producto_buscado": producto_buscado})
+
