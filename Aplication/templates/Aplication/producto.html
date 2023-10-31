@@ -1,18 +1,26 @@
 {% extends "base.html" %}
 
 {% block h1_titulo %}PRODUCTOS{% endblock h1_titulo %}
-{% block p_titulo %}Bienvenido a nuestro catalago de productos{% endblock p_titulo %}
+{% block p_titulo %}Bienvenido a nuestro catálogo de productos{% endblock p_titulo %}
 
 {% block tit %}<title>Nuestros Productos</title>{% endblock tit %}
 
-{% block formulario %}
+{% block formulario_crear %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ formulario_crear.as_p }}  {# o as_table, as_ul#}
+    <input type="submit" name="" id="" value="Crear">    
+</form>
+{% endblock formulario_crear %}
+
+{% block formulario_buscar %}
 <form action="">
-     {{formulario}}    
+    {{ formulario_buscar.as_table }}  
     <input type="submit" name="" id="" value="Buscar">    
 </form>
 <ul>
     {% for prod in producto_buscado %}
-    <li>Producto:{{prod}}</li>
+        <li>Producto: {{ prod.producto }}</li>  
     {% endfor %}
 </ul>
-{% endblock formulario %}
+{% endblock formulario_buscar %}

@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         {% block tit %}
-        <title>Full Width Pics - Start Bootstrap Template</title>
+        <title>Mi pagina</title>
         {% endblock tit %}
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -16,13 +16,13 @@
     </head>
     <body>
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
             <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
+                <a class="navbar-brand" href="#!">Gaming</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/urlinicio/">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/inicio/">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="/cliente/">Clientes</a></li>
                         <li class="nav-item"><a class="nav-link" href="/proveedor/">Proveedores</a></li>
                         <li class="nav-item"><a class="nav-link" href="/producto/">Nuestros Productos</a></li>
@@ -33,15 +33,15 @@
             </div>
         </nav>
         <!-- Header - set the background image for the header in the line below-->
-        <header class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1600x900')">
+        <header class="py-5 bg-image-full" style="background-image: url('https://images.pexels.com/photos/1831234/pexels-photo-1831234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')">
             <div class="text-center my-5">
-                <h1 class="text-white fs-3 fw-bolder">{% block h1_titulo %}{% endblock h1_titulo %}</h1>
-                <p class="text-white-50 mb-0">{% block p_titulo %}{% endblock p_titulo %}</p>
+                <h1 class="text-muted fs-3 fw-bolder">{% block h1_titulo %}{% endblock h1_titulo %}</h1>
+                <p class="text-muted mb-0">{% block p_titulo %}{% endblock p_titulo %}</p>
             </div>
         </header>
         <!-- Content section-->
         <!-- Image element - set the background image for the header in the line below-->
-        <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+        <div class="py-5 bg-image-full" style="background-image: url('https://i.pinimg.com/originals/a4/83/de/a483de8bfeb6d29dea6f64a817f0e3f5.png')">
             <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
             <div style="height: 20rem">
                 {% block formulario %}
@@ -49,8 +49,8 @@
             </div>
         </div>
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        <footer class="py-5 bg-white">
+            <div class="container"><p class="m-0 text-center text-muted">Copyright &copy; Your Website 2023</p></div>
         </footer>
     </body>
 </html>
