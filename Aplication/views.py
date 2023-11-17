@@ -1,73 +1,118 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.template import loader
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView, DeleteView
 from django.http import HttpResponse
-from django.template import Template, Context, loader
-from Aplication.models import Cliente, Proveedor, Producto
-from Aplication.forms import ClienteFormulario, ProveedorFormulario, ProductoFormulario, BusquedaproductoFormulario
+from Aplication.forms import FormularioHeadsets, FormularioTeclados, FormularioMouses, FormularioProducto
+from Purchase.models import Carrito
+from Aplication.models import Producto
+from ckeditor.fields import RichTextField
 
 
 
-def vista_inicio(request):
-    return render(request, r'Aplication\inicio.html')
 
+def mouses(request):
+    productos = Producto.objects.filter(tipo='mouses')
+    form = FormularioMouses() 
+    return render(request, 'mouses.html', {'productos': productos, 'form': form})
 
+def teclados(request):
+    productos = Producto.objects.filter(tipo='teclados')
+    form = FormularioTeclados() 
+    return render(request, 'teclados.html', {'productos': productos, 'form': form})
 
-def vista_cliente(request):
+def headsets(request):   
+    productos = Producto.objects.filter(tipo='headset')
+    form = FormularioHeadsets() 
 
-    if request.method == "POST":
-        formulario = ClienteFormulario(request.POST)
-        if formulario.is_valid():
-            data = formulario.cleaned_data
-            cliente = Cliente(nombre_completo=data.get("nombre_completo"),direccion_mail=data.get("direccion_mail"),telefono=data.get("telefono"))
-            cliente.save()
+    return render(request, 'accesorios.html', {'productos': productos, 'form': form})
+
+def editar_producto(request, producto_id):   
+    producto = Producto.objects.get(id=producto_id)
+
+    return render(request, 'tienda/editar_producto.html', {'producto': producto})
+
+def eliminar_producto(request, producto_id):   
+    producto = Producto.objects.get(id=producto_id)
+    mensaje = messages
+    if request.method == 'POST':
+        producto.delete()
+        print('----el producto ha sido eliminado------')
+        if producto.tipo == 'mouses':
+            url_productos = 'mouses'
+        elif producto.tipo == 'headsets':
+            url_productos = 'headsets'
         else:
-            return render(request, r'Aplication\cliente.html',{"formulario":formulario})        
-
-    formulario = ClienteFormulario()
-    return render(request, r'Aplication\cliente.html',{"formulario":formulario})
-
-
-
-
-def vista_proveedor(request):
-
-    if request.method == "POST":
-        formulario = ProveedorFormulario(request.POST)
-        if formulario.is_valid():
-            data = formulario.cleaned_data
-            proveedor = Proveedor(nombre_proveedor=data.get("nombre_proveedor"),mail_proveedor=data.get("mail_proveedor"),telefono_prov=data.get("telefono_prov"))
-            proveedor.save()
-        else:
-            return render(request, r'Aplication\proveedor.html',{"formulario":formulario})        
-
-    formulario = ProveedorFormulario()
-    return render(request, r'Aplication\proveedor.html',{"formulario":formulario})
-
-
-
-def vista_producto(request):
-    if request.method == "POST":
-        formulario_crear = ProductoFormulario(request.POST)
-        if formulario_crear.is_valid():
-            data = formulario_crear.cleaned_data
-            producto = Producto(producto=data.get("producto"), rubro=data.get("rubro"), subrubro=data.get("subrubro"))
-            producto.save()
-            # Deberia redirigir al usuario o mostrar un mensaje de éxito  (para la proxima)
-        else:
-            return render(request, 'Aplication/producto.html', {"formulario_crear": formulario_crear})
-
-    formulario_crear = ProductoFormulario()
-
-    if request.method == "GET":  # Cambiado para GET
-        formulario_buscar = BusquedaproductoFormulario(request.GET)
-        if formulario_buscar.is_valid():
-            data = formulario_buscar.cleaned_data.get("producto")
-            producto_buscado = Producto.objects.filter(producto__icontains=data)
-        else:
-            producto_buscado = Producto.objects.all()
+            producto.tipo = 'teclados'
+            url_productos = 'teclados'
+        return redirect(url_productos)
     else:
-        formulario_buscar = BusquedaproductoFormulario()
-        formulario_crear = ProductoFormulario()
-        producto_buscado = Producto.objects.all()
+        print('-----vuelva a intentarlo-----')
 
-    return render(request, 'Aplication/producto.html', {"formulario_crear": formulario_crear, "formulario": formulario_buscar, "producto_buscado": producto_buscado})
+    return render(request, 'tienda/eliminar_producto.html', {'producto': producto})
 
+def detalle_producto(request, producto_id):   
+    producto = Producto.objects.get(id=producto_id)
+    if producto.tipo == 'mouses':
+        url_productos = 'mouses'
+    elif producto.tipo == 'headsets':
+        url_productos = 'headsets'
+    else:
+        producto.tipo = 'teclados'
+        url_productos = 'teclados'
+
+
+    return render(request, 'tienda/detalle_producto.html', {'producto':producto, 'url_productos': url_productos})
+
+@login_required
+def agregar_al_carrito(request, producto_id):
+    if not request.user.is_authenticated:
+        return redirect('loguin')
+    
+    producto = get_object_or_404(Producto, id=producto_id)
+    print(producto)
+    carrito, creado = Carrito.objects.get_or_create(
+        usuario=request.user, producto= producto, nombre_producto=producto.nombre, precio=producto.precio, cantidad=1, imagen= producto.imagen)
+
+    if not creado:
+        carrito.cantidad += 1
+
+
+    carrito.save()
+    return redirect('carrito')
+
+def agregar_producto(request):
+    if request.method == 'POST':
+        form = FormularioProducto(request.POST, request.FILES)
+        if form.is_valid():
+            producto = form.save(commit=False)  
+            producto.save()
+
+            if producto.tipo == 'mouses':
+                url_productos = 'mouses'
+            elif producto.tipo == 'headsets':
+                url_productos = 'heatsets'
+            else:
+                producto.tipo = 'teclados'
+                url_productos = 'teclados'
+
+            return redirect(url_productos)  
+        form = FormularioProducto()
+
+    return render(request, '/agregar_producto.html', {'form': form})
+    
+class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+    model = Producto
+    template_name = '/editar_producto.html'
+    fields = ['nombre', 'descripcion', 'precio', 'imagen', 'cantidad', 'tipo']
+
+    
+    def form_valid(self, form):
+        producto = form.save()
+        span = messages
+        print('------producto editado----------')
+        span.success(self.request, '¡EL PRODUCTO HA SIDO EDITADO SATISFACTORIAMENTE!', extra_tags='editado')
+        return redirect('eliminar_producto', producto_id=producto.id)

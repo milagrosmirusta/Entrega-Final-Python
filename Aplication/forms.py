@@ -1,21 +1,53 @@
-from django import forms
-
-class ClienteFormulario(forms.Form):
-    nombre_completo = forms.CharField(max_length=50)
-    direccion_mail = forms.CharField(max_length=50)
-    telefono = forms.IntegerField()
-
-class ProveedorFormulario(forms.Form):
-    nombre_proveedor = forms.CharField(max_length=50)
-    mail_proveedor = forms.CharField(max_length=50)
-    telefono_prov = forms.IntegerField()
+from django import forms 
+from Aplication.models import Producto
+from ckeditor.fields import RichTextFormField
 
 
-class ProductoFormulario(forms.Form):
-    producto = forms.CharField(max_length=50)
-    rubro = forms.CharField(max_length=50)
-    subrubro = forms.IntegerField()
+class FormularioProducto(forms.ModelForm):
+    nombre = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre del Producto'}))
+    descripcion = RichTextFormField()
+    precio = forms.DecimalField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Precio'}))
+    imagen = forms.ImageField(label="", required=True, widget=forms.ClearableFileInput(attrs={'placeholder': 'Seleccionar Imagen'}))
+    cantidad = forms.IntegerField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Cantidad'}))
+    tipo = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Tipo de Producto'}))
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'cantidad', 'tipo']
+        help_texts = {key: '' for key in fields}
+class FormularioHeadsets(forms.ModelForm):    
+    nombre = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre del Producto'}))
+    descripcion = RichTextFormField()
+    precio = forms.DecimalField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Precio'}))
+    imagen = forms.ImageField(label="", required=True, widget=forms.ClearableFileInput(attrs={'placeholder': 'Seleccionar Imagen'}))
+    cantidad = forms.IntegerField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Cantidad'}))
+    tipo = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Tipo de Producto'}))
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'cantidad', 'tipo']
+        help_texts = {key: '' for key in fields}
+    
+class FormularioTeclados(forms.ModelForm):
+    nombre = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre del Producto'}))
+    descripcion = RichTextFormField()
+    precio = forms.DecimalField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Precio'}))
+    imagen = forms.ImageField(label="", required=True, widget=forms.ClearableFileInput(attrs={'placeholder': 'Seleccionar Imagen'}))
+    cantidad = forms.IntegerField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Cantidad'}))
+    tipo = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Tipo de Producto'}))
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'cantidad', 'tipo']
+        help_texts = {key: '' for key in fields}
+        
+class FormularioMouses(forms.ModelForm):
+    nombre = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre del Producto'}))
+    descripcion = RichTextFormField()
+    precio = forms.DecimalField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Precio'}))
+    imagen = forms.ImageField(label="", required=True, widget=forms.ClearableFileInput(attrs={'placeholder': 'Seleccionar Imagen'}))
+    cantidad = forms.IntegerField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Cantidad'}))
+    tipo = forms.CharField(label="", required=True, widget=forms.TextInput(attrs={'placeholder': 'Tipo de Producto'}))
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'cantidad', 'tipo']
+        help_texts = {key: '' for key in fields}
+        
 
-
-class BusquedaproductoFormulario(forms.Form):
-    producto = forms.CharField(max_length=50, required=False)
